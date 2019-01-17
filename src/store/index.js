@@ -12,6 +12,7 @@ export const initialStoreState = () => ({
 
 export const initialPokemonState = () => ({
   name: 'New Pokemon',
+  nickname: '',
   id: null,
   type1: '',
   type2: '',

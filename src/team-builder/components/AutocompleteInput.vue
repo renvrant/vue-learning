@@ -1,11 +1,11 @@
 <template>
     <label>
         {{ label }}
-        <input type="text" v-model="value" @focus="inputFocused">
-        <div v-if="isFocused">
+        <input type="text" :value="value" @input="handleValueChange" @change="handleValueChange">
+        <div>
             <button v-for="suggestion in suggestions"
                     :key="suggestion"
-                    @click="useSuggestion(suggestion)">
+                    @click="emitChange(suggestion)">
                 {{ suggestion }}
             </button>
         </div>
@@ -17,7 +17,7 @@ export default {
   name: 'AutocompleteInput',
   props: {
     label: String,
-    initialValue: String,
+    value: String,
     dataset: {
       type: Array,
       default: () => [],
@@ -26,28 +26,24 @@ export default {
   },
   data: function() {
     return {
-      isFocused: false,
-      value: this.initialValue,
+      suggestions: [],
     }
   },
-  computed: {
-    suggestions() {
-      return this.dataset.filter(item =>
-        item.toLowerCase().startsWith(this.value.toLowerCase())
-        && item.toLowerCase() !== this.value.toLowerCase()
+  watch: {
+    value: function(val) {
+      const value = val.toLowerCase();
+      this.suggestions = this.dataset.filter(item =>
+        item.toLowerCase().startsWith(value)
+        && item.toLowerCase() !== value
       ).slice(0, 10);
     }
   },
   methods: {
-    useSuggestion(suggestion) {
-      this.value = suggestion;
-      this.emitChange();
+    handleValueChange(event) {
+      this.emitChange(event.target.value);
     },
-    inputFocused() {
-      this.isFocused = true;
-    },
-    emitChange() {
-      this.$emit('change', this.value);
+    emitChange(value) {
+      this.$emit('change', value);
     }
   },
 }

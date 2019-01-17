@@ -1,2 +1,2 @@
-export * from './AutocompleteInput';
-export * from './TextInput';
+export AutocompleteInput from './AutocompleteInput';
+export TextInput from './TextInput';
