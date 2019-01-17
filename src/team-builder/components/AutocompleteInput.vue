@@ -1,8 +1,8 @@
 <template>
     <label>
         {{ label }}
-        <input type="text" v-model="value" @focus="inputFocused" @blur="inputBlurred">
-        <div v-if="inputFocused">
+        <input type="text" v-model="value" @focus="inputFocused">
+        <div v-if="isFocused">
             <button v-for="suggestion in suggestions"
                     :key="suggestion"
                     @click="useSuggestion(suggestion)">
@@ -32,19 +32,22 @@ export default {
   },
   computed: {
     suggestions() {
-      return this.dataset.filter(item => item.toLowerCase().startsWith(this.value)).slice(0, 10);
+      return this.dataset.filter(item =>
+        item.toLowerCase().startsWith(this.value.toLowerCase())
+        && item.toLowerCase() !== this.value.toLowerCase()
+      ).slice(0, 10);
     }
   },
   methods: {
     useSuggestion(suggestion) {
       this.value = suggestion;
-      this.$emit('change', this.value);
+      this.emitChange();
     },
     inputFocused() {
-      this.inputFocused = true;
+      this.isFocused = true;
     },
-    inputBlurred() {
-      this.inputFocused = false;
+    emitChange() {
+      this.$emit('change', this.value);
     }
   },
 }

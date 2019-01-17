@@ -4,15 +4,13 @@
         <AutocompleteInput
                 :dataset="pokemonList"
                 label="Pokemon Name"
-                :value="form.name"
+                :initial-value="form.name"
                 @change="updateName" />
     </section>
 </template>
 
 <script>
     import AutocompleteInput from './components/AutocompleteInput';
-    import { TeamBuilderKeys } from './store/keys';
-    import {initialPokemonState} from './object-factories.logic';
 
     export default {
       name: 'TeamForm',
