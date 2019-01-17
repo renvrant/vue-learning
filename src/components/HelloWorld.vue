@@ -1,6 +1,14 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <h3>{{ helloMsg }}</h3>
+    <button v-on:click="increaseCount">Click Higher</button>
+    <h2>{{ count }}</h2>
+    <p>
+      <input type="text" v-model="form.name" @blur="logValues">
+      <input type="checkbox" v-model="form.consent" @blur="logValues">
+      <button type="button" @click="logValues">Log values</button>
+    </p>
     <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
@@ -34,7 +42,31 @@
 export default {
   name: 'HelloWorld',
   props: {
-    msg: String
+    msg: String,
+    twoWords: Number,
+  },
+  data: function() {
+    return {
+      count: this.twoWords,
+      form: {
+        name: '',
+        consent: false,
+      }
+    }
+  },
+  methods: {
+    increaseCount() {
+      this.count++;
+    },
+    logValues() {
+      console.log(this.form.name, this.form.consent, this.form);
+    },
+    addHello(value) { return `Hello ${value}`; }
+  },
+  computed: {
+    helloMsg() {
+      return this.addHello(this.msg);
+    },
   }
 }
 </script>
